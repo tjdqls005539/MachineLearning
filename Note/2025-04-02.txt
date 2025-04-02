@@ -1,0 +1,55 @@
+#***중요 $는 변수 불러오기 ex)a$eng : 백터,배열
+#***중요 length는 데이터 길이,개수
+
+#1번 문제 풀이
+data <- read.csv("C:/Users/user/Desktop/Score_2.csv")
+
+df <- data.frame(
+  group = c(rep("Group 1",length(data$eng)),rep("Group 2",length(data$math))),
+  values = c(data$eng,data$math))
+
+ggplot(df,aes(x = group,y = values)) +
+  geom_boxplot(fill = c("lightblue","lightgreen"),outlier.color = "red") +
+  labs(title = "Boxplot Example") +
+  xlab("Group") +
+  ylab("Values")
+
+#하나의 모집단의 평균 구하기
+#(구하는 수-평균)/sqrt(표준편차^2/임의의 값)
+(150-143)/sqrt(400/36)
+
+#두개의 모집단의 평균 구하기
+#(평균1-평균2 - 구하는수)/(sqrt(분산1/표본집단1)+(sqrt(분산2/표본집단2))
+(4-12+6)/sqrt((16/64)+(48/75))
+
+#t-test
+group_a <- c(85, 88, 90, 92, 91, 87, 89, 86, 84, 83)
+group_b <- c(78, 82, 80, 85, 84, 87, 83, 81, 80, 79)
+mean_a <- mean(group_a)
+mean_b <- mean(group_b)
+sd_a <- sd(group_a)
+sd_b <- sd(group_b)
+t_statistic <- (mean_a- mean_b) / sqrt((sd_a^2 / length(group_a)) + 
+                                         (sd_b^2 / length(group_b)))
+# 자유도
+df <- length(group_a) + length(group_b) - 2
+
+#집단 a의 평균과 집단 b의 평균의 차이가 존재한다
+t_test_result <- t.test(group_a, group_b, alternative = "two.sided")
+#집단 a의 평균이 집단 b보다 작다
+t_test_result <- t.test(group_a, group_b, alternative = "less")
+#집단 a의 평균이 집단 b보다 크다
+t_test_result <- t.test(group_a, group_b, alternative = "greater")
+
+#z-test
+install.packages("BSDA")
+
+group_a <- c(85, 88, 90, 92, 91, 87, 89, 86, 84, 83, 85, 88, 90, 92, 91, 87, 89, 86, 84, 83, 85, 88, 90, 92, 91, 87, 89, 86, 84, 83, 85, 88, 90, 92, 91, 87)
+group_b <- c(78, 82, 80, 85, 84, 87, 83, 81, 80, 79, 78, 82, 80, 85, 84, 87, 83, 81, 80, 79, 78, 82, 80, 85, 84, 87, 83, 81, 80, 79, 78, 82, 80, 85, 84, 87)
+
+#표준편차
+sd_a = sd(group_a)
+sd_b = sd(group_b)
+
+# Z-test
+result <- z.test(x = group_a, y = group_b, sigma.x = sd_a, sigma.y = sd_b, alternative = "two.sided")
