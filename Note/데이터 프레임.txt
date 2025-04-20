@@ -1,0 +1,104 @@
+데이터 프레임
+df <- data.frame("CITY"(#변수)=city,"PM25"(#변수)=pm25)
+
+id=c(1,2,3,4,5,6,7,8)
+gender=c("F","M","F","F","F","F","M","M")
+major=c("com","busi","Eng","Eng","Math","Math","Com","Eng")
+salary=c(2700,2900,3000,3000,2600,2350,2800,2400)
+
+survey=data.frame(ID=id,GEN=gender, MAJ=major,SAL=salary,
+                  stringsAsFactors = FALSE)
+#stringsAsFactors는 false면 문자(벡터) ture면 숫자(Factor)
+
+head(survey,3) #n개의 숫자만큼 앞에서부터 불러옴
+tail(survey,5) #n개의 숫자만큼 뒤에서부터 불러옴
+
+survey[[1]]
+survey$ID # 셋다 똑같이 ID를 불러내지만 2번째 방법이 가장 효율적이고 간편함
+survey[["ID"]]
+
+survey$total = survey$SAL-200 # survey데이터프레임에 "total"이라는
+                                              새로운 변수 생성
+survey$total2 = survey$SAL + survey$total
+
+typeof(survey$ID) #원래의 타입은 "double"
+survey$ID = as.integer(survey$ID) # "integer"
+survey$ID = as.numeric(survey$ID) # "double"
+survey$ID = as.factor(survey$ID) # "integer"
+survey$ID = as.logical(survey$ID) # "logical"
+survey$ID = as.character(survey$ID) # "character"
+
+names(survey) # 변수명 불러오기
+names(survey)[2] # survey데이터프레임에 2번째 변수명 불러오기
+
+names(survey)[names(survey)=="total2"]="Total2" 
+# 변수명 바꾸기 "total2" -> "Total2"
+
+survey[c(1,4)] # 데이터 프레임 1,4번째 줄 가져오기
+survey[c(2,3)] # 데이터 프레임 2,3번째 줄 가져오기
+survey[c(-1,-2)]
+
+#조건문
+survey[survey$GEN=="F",] 
+#survey 성별 여자만 가져오기 뒤에 "컴마(,)"필수! , 대괄호([ ])필수!
+survey[survey$MAJ=="Eng" 
+       | survey$SAL=="3000",] # 조건문 OR
+survey[survey$MAJ=="Eng" 
+       & survey$SAL=="3000",] # 조건문 AND
+subset(survey,survey$MAJ == "Eng")
+
+id_2=c(1,2,3,4,5,6,7,8)
+gender_2=c("F","M","M","F","F","M","F","F")
+major_2=c("Eng","busi","com","Eng","Com","Math","Com","Math")
+salary_2=c(2700,3000,2500,2800,2600,2350,2900,2500)
+
+survey_2=data.frame(ID=id_2,GEN=gender_2,
+                    MAJ=major_2,SAL=salary_2,
+                    stringsAsFactors = FALSE)
+
+# 데이터 합치기
+rbind(survey,survey_2) # 열 합침
+cbind(survey,survey_2) # 행 합침
+
+subset(survey,survey$MAJ == "Eng" & survey$SAL>2500,
+       select = c("ID","MAJ","SAL"))
+#select 조건문에 해당하는 열 가져오기
+
+b = subset(survey,survey$MAJ == "Eng" & survey$SAL>2500,
+       select = c("ID","MAJ","SAL"))
+b$ID=NULL # b에서 "ID"변수 삭제
+
+Name=c("Kim Cheol-soo","Lee Cheol-soo","Kim Young-hee",
+       "Lee Young-hee","Kim Min-jung","Park Min-jun",
+       "Kim Ji-young","Park Ji-young")
+Age=c(20,24,21,24,35,40,34,35)
+df = data.frame("Name"= Name,"Age"= Age,stringsAsFactors = FALSE)
+df
+
+df_1 = separate(df, col="Name", into=c("LastName","FirstName"), sep = "-")
+# df데이터프레임에 0"Name"에서 "-"를 기준으로 
+마지막이름과 첫번째 이름으로 나눔
+
+# 첫 번째 절반 (1~200행)
+df1 <- df[1:200, ]
+
+# 두 번째 절반 (201~400행)
+df2 <- df[201:400, ]
+
+getwd()
+read.csv("C:/Users/josuo/OneDrive/Documents/test/Score.csv")
+data <- c(100,200,300,400,200,200,100,400,250,230,70,80,90)
+mean(data) #평균
+sd(data) #표준편차
+var(data) #분산
+median(data) #중앙값
+sort(data) #정렬
+quantile(data) #사분위수
+IQR(data) #사분위수 범위
+
+rlakfdatarlakf=(75+88+91+68+82)/5
+wndrks=(60+87+55+47+92)/5
+(75+88+82)/3
+(60+87+55)/3
+cha = c(75*0.5+60*0.3, 88*0.5+87*0.3, 91*0.5+55*0.3, 68*0.5+47*0.3, 82*0.5+92*0.3)
+rank(cha)
