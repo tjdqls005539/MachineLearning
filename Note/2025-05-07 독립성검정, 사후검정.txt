@@ -1,0 +1,62 @@
+#H0:서로 관련성이 없다.
+#H1:서로 관련성이 없다.
+
+observed <- matrix(c(25, 15, 20, 30, 35, 25, 15, 20, 15),
+                   nrow = 3, byrow = TRUE)
+rownames(observed) <- c("Red", "Blue", "Green")
+colnames(observed) <- c("Chocolate", "Vanilla", "Strawberry")
+chi_squared <- chisq.test(observed)
+print(chi_squared) #p-value = 0.4031 > 0.05 (H0채택)
+
+data <- data.frame(
+  Gender = c("Male", "Female", "Male", "Male", "Female",
+             "Female", "Male", "Male", "Female", "Female"),
+  Food = c("국밥","마라탕","국밥","피자","피자","국밥","국밥",
+           "마라탕","피자","피자"))
+cross_tab <- table(data$Gender,data$Food)
+cross_tab
+
+chi_square_test_result <- chisq.test(cross_tab)
+print(chi_square_test_result) #p-value = 0.3679 > 0.05 (H0채택)
+
+df <- read.csv("C:/Users/user/Desktop/gender_food.csv")
+cross_tab <- table(df$Gender, df$Food)
+cross_tab
+
+chi_square_test_result <- chisq.test(cross_tab)
+print(chi_square_test_result)
+
+#사후검정
+install.packages("chisq.posthoc.test")
+library(chisq.posthoc.test)
+cross_tab <- table(df$Gender,df$Food)
+cross_tab
+
+results <- chisq.posthoc.test(cross_tab,method = "bonferroni")
+results
+
+#조합공식
+choose(3,2) # choose(n,k) 
+# n = 항목의 수(국밥, 마라탕, 피자) 
+# k = 비교대상(남자, 여자)
+
+# 부부의 집안일에 대해서 판단하기
+
+#카이제곱 분석
+data = read.csv("C:/Users/user/Desktop/housetasks.csv",row.names = 1)
+chi_square_test_result <- chisq.test(data)
+print(chi_square_test_result)
+# p-value = 2.2e-16 < 0.05 H1채택
+
+#사후검증
+results <-chisq.posthoc.test(data, method = "bonferroni")
+results
+
+df <-read.csv("C:/Users/user/Desktop/Customer_Preferences.csv")
+cross_tab <- table(df$Gender,df$Preferred_Product_Category)
+cross_tab
+
+chi_square_test_result <- chisq.test(cross_tab)
+print(chi_square_test_result)
+# p-value = 0.7187 > 0.05 H0채택
+#남녀에 따른 제품 고객선호도는 관련성이 없다.
