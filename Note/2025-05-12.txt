@@ -1,0 +1,32 @@
+#1번 문제
+#H0 색깔의 분포에 차이가 없다.
+#H1 색깔의 분포에 차이가 있다.
+data = read.csv("C:/Users/user/Desktop/color.csv")
+
+Observed <- table(data$색깔)
+expected <- rep(sum(Observed) / length(Observed), length(Observed))
+test_result <- chisq.test(x = Observed, p = expected / sum(expected))
+print(test_result)
+# p-value = 2.771e-06 < 0.05 색깔의 분포에 차이가 있다.
+
+std_residuals <- (Observed - expected) / sqrt(expected)
+chi_square_values <- std_residuals^2
+p_values <- 1 - pchisq(chi_square_values, df = 3)
+Observed$Residuals <- std_residuals
+Observed$Chi_square <- chi_square_values
+Observed$p_value <- p_values
+print(Observed)
+# p_value가 0.05보다 낮은것은 빨강과 초록
+# 잔차값이 빨강이 4.2 초록이 -3.2 빨강이 많고 초록이 적다
+
+#2번 문제
+#H0 카페 분위기가 고객의 만족도에 관련성이 없다.(독립성이 있다.)
+#H1 카페 분위기가 고객의 만족도에 관련성이 있다.(독립성이 없다.)
+df = read.csv("C:/Users/user/Desktop/incafe.csv")
+cross_tab <- table(df$카페분위기,df$만족도)
+chi_square_test_result <- chisq.test(cross_tab)
+print(chi_square_test_result)
+# p-value = 1.279e-07 < 0.05 카페 분위기가 고객의 만족도에 관련성이 있다.
+results <- chisq.posthoc.test(cross_tab, method = "bonferroni")
+results
+# 북적이는, 음악이 있는 카페는 만족도낮음에 많은 영향을 미치고 자연채광,조용한 카페는 만족도높음에 많은 영향을 미쳤다.
