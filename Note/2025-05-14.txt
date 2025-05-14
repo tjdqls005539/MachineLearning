@@ -1,0 +1,57 @@
+# H0 스마트폰 사용목적에 따른 수면 만족도의 관련성은 없다. (독립적이다.)
+# H1 스마트폰 사용목적에 따른 수면 만족도의 관련성은 있다. (독립적이지 않다.)
+df = read.csv("C:/Users/user/Desktop/smartphone_sleep1.csv")
+cross_tab <- table(df$스마트폰사용목적,df$수면만족도)
+chi_square_test_result <- chisq.test(cross_tab)
+print(chi_square_test_result)
+# p_value = 0.746 > 0.05 H0 채택
+
+# H0 스마트폰 사용목적에 따른 수면 만족도의 관련성은 없다. (독립적이다.)
+# H1 스마트폰 사용목적에 따른 수면 만족도의 관련성은 있다. (독립적이지 않다.)
+df2 = read.csv("C:/Users/user/Desktop/smartphone_sleep2.csv")
+cross_tab2 <- table(df2$스마트폰사용목적,df2$수면만족도)
+chi_square_test_result2 <- chisq.test(cross_tab2)
+print(chi_square_test_result2)
+# p_value = 2.076e-11 < 0.05 H1 채택
+results <- chisq.posthoc.test(cross_tab2, method = "bonferroni")
+results
+
+F-test
+#𝑯𝟎 : 두집단의 분산은 같다.
+#𝑯𝟏 : 두집단의 분산은 차이가 있다
+set_a = c(10.1,10.2,10.3,10.0,10.1,10.2,10.3,10.0,10.1,10.2)
+set_b = c(9.8,10.5,10.2,9.7,10.4,10.3,9.6,10.6,9.9,10.7)
+
+# F-test: 분산 동질성 검정(양측)
+result <- var.test(set_a,set_b)
+print(result)
+
+# F-test: 분산 동질성 검정(단측) : a집단은 b집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "less")
+
+# F-test: 분산 동질성 검정(단측) : b집단은 a집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "greater")
+
+data = read.csv("C:/Users/user/Desktop/Machine_set.csv")
+set_a <- subset(data,machine == "A")$value
+set_b <- subset(data,machine == "B")$value
+
+# F-test: 분산 동질성 검정(양측)
+result <- var.test(set_a,set_b)
+print(result)
+
+# F-test: 분산 동질성 검정(단측) : a집단은 b집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "less")
+
+# F-test: 분산 동질성 검정(단측) : b집단은 a집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "greater")
+
+# a,b,c기계의 분산은 같다 p-value > 0.05
+set_a <- c(10.2, 10.3, 10.1, 10.0, 10.3, 10.2, 10.1, 10.2, 10.1, 10.3) 
+set_b <- c(10.1, 10.0, 10.2, 10.3, 10.0, 10.1, 10.2, 10.1, 10.2, 10.1)
+set_c <- c(10.2, 10.3, 10.3, 10.3, 10.4, 10.3, 10.2, 10.4, 10.3, 10.4)
+var.test(set_b,set_a,alternative = "less")
+var.test(set_b,set_a,alternative = "greater")
+var.test(set_c,set_a,alternative = "less")
+var.test(set_c,set_a,alternative = "greater")
+
