@@ -1,0 +1,103 @@
+df = read.csv("C:/Users/user/Desktop/500_Person_Gender_Height.csv")
+set_a <- subset(df, Gender == "Male")$value
+set_b <- subset(df, Gender == "Female")$value
+
+# F-test: 분산 동질성 검정(양측)
+result <- var.test(set_a,set_b)
+print(result)
+
+# F-test: 분산 동질성 검정(단측) : a집단은 b집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "less")
+
+# F-test: 분산 동질성 검정(단측) : b집단은 a집단보다 분산이 작다.
+var.test(set_a,set_b,alternative = "greater")
+
+# ANOVA TEST 일원분산분석(one-way ANOVA)
+# H0 : 여러 집단 간의 평균은 차이가 없다.
+# H1 : 적어도 한 그룹의 평균은 차이가 있다.
+
+# 1.데이터 불러오기
+data <- read.csv("C:/Users/user/Desktop/class_scores.csv", stringsAsFactors = TRUE)
+
+# 2.ANOVA 분석
+anova_result <- aov(Score ~ Class, data = data)
+
+# 3.분석결과출력 -> 0.05 > p-value 귀무가설 기각
+summary(anova_result)
+
+# 4.사후검증 출력
+install.packages("multcomp")
+library(multcomp)
+
+tukey_result <- glht(anova_result, linfct = mcp(Class = "Tukey"))
+summary(tukey_result)
+# Estimate Std.가 음수값을 가지면 B - A에서 A가 더 크다
+# Estimate Std.가 음수값을 가지면 B - A에서 B가 더 크다
+
+# 이원분산분석(two-way ANOVA)
+# H0 : 독립변수 a와 독립변수 b 사이에는 상호작용이 없다.(종속변수에 영향을 주지 못함)
+# H1 : 독립변수 a와 독립변수 b 사이에는 상호작용이 있다.(종속변수에 영향을 줌)
+
+grow <- read.csv("C:/Users/user/Desktop/growth.csv",stringsAsFactors = TRUE)
+
+# 이원분산분석(독립변수들간 상호작용X)
+anova_result <- aov(growth ~ fertilizer + water, data = grow)
+summary(anova_result)
+
+# 이원분산분석(독립변수들간 상호작용)
+anova_result <- aov(growth ~ fertilizer * water, data = grow)
+summary(anova_result)
+
+# 사후검증
+install.packages("car")
+library(car) #등분산검정
+install.packages("rstatix")
+library(rstatix) #games_howell_test
+
+# 사후검정(fertilizer)
+leveneTest(growth ~ fertilizer, data = grow)
+# 0.05 > p_value 등분산이 아니다
+
+# 등분산이 아닐경우 games-howell 검증사용가능
+games_howell_test(grow, growth ~ fertilizer)
+###  games-howell 주의사항 -> 결과에서 group1과 group2의 자리를 바꿔줘야한다. A - B이면 B - A로!
+# C > B > A
+
+# 사후검정(water)
+leveneTest(growth ~ water, data = grow)
+# 0.05 > p_value 등분산이 아니다.
+
+games_howell_test(grow, growth ~ water)
+# HIGH > LOW
+
+# 사후검정(fertilizer*water)
+grow$group <- interaction(grow$fertilizer, grow$water)
+group_model <- aov(growth ~ group, data = grow)
+summary(group_model)
+
+leveneTest(growth ~ group, data = grow)
+# 0.05 < p_value 등분산이다.
+
+tukey_result <- glht(group_model, linfct = mcp(group = "Tukey"))
+summary(tukey_result)
+
+
+cafe <- read.csv("C:/Users/user/Desktop/cafe.csv",stringsAsFactors = TRUE)
+
+anova_result <- aov(Satisfaction ~ CoffeeType + CafeMood + SeatLocation, data = cafe)
+summary(anova_result)
+
+anova_result <- aov(Satisfaction ~ CoffeeType * CafeMood * SeatLocation, data = cafe)
+summary(anova_result)
+
+leveneTest(Satisfaction ~ CoffeeType, data = cafe)
+tukey_result <- glht(anova_result, linfct = mcp(CoffeeType = "Tukey"))
+summary(tukey_result) # Latte > Americano > Espresso
+
+leveneTest(Satisfaction ~ CafeMood, data = cafe)
+tukey_result <- glht(anova_result, linfct = mcp(CafeMood = "Tukey"))
+summary(tukey_result) # Quiet > Music > Crowded
+
+leveneTest(Satisfaction ~ SeatLocation, data = cafe)
+tukey_result <- glht(anova_result, linfct = mcp(SeatLocation = "Tukey"))
+summary(tukey_result) # Window > Terrace > Center
