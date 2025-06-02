@@ -1,0 +1,47 @@
+install.packages("psych")
+library(psych)
+
+# 상관관계 분석(Pearson)
+heights <- c(160, 162, 155, 180, 170, 175, 165, 171, 177, 172)
+weights <- c(55, 60, 53, 72, 70, 73, 62, 64, 69, 65)
+
+#피어슨상관관계 도출 및 p_value
+result_pearson = corr.test(heights, weights, method="pearson")
+
+result_pearson$p #p_value
+result_pearson$r #상관관계 계수
+
+# 스피어만(Spearman)
+# 학생의 자기평가 (순위형: 1=매우 낮음 ~ 5=매우 높음)
+s_eval <- c(3, 4, 2, 5, 1, 4, 3, 2, 5, 3)
+# 평가자의 평가 (순위형: 1=매우 낮음 ~ 5=매우 높음)
+e_eval <- c(2, 5, 2, 4, 1, 4, 3, 2, 5, 3)
+
+# 스피어만 상관계수 도출 및 p-value
+result_pearson=corr.test(s_eval, e_eval, method="spearman")
+
+result_pearson$p #p-value
+result_pearson$r #상관관계 계수
+
+
+
+
+data= read.csv(“pearson.csv”)
+data= read.csv(“spearman.csv”)
+indep_vars <- data[, c(＂독립변수1", " 독립변수2", " 독립변수3", “독립변수4”)]
+# 종속변수 (연속형)
+target_var <- data_pearson[, ＂종속변수", drop = FALSE] #drop = FALSE(데이터프레임 유지)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
