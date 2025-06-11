@@ -1,0 +1,49 @@
+candy_data <- data.frame(
+  Color = c("Red", "Blue", "Green"),  
+  Observed = c(30, 50, 20))
+total_candies <- sum(candy_data$Observed)
+expected <- rep(total_candies/3, 3)
+test_result <- chisq.test(candy_data$Observed, p = expected / sum(expected))
+print(test_result)
+
+observed <-table(data$variable)
+expected <-rep(sum(observed) / length(observed), length(observed))
+test_result <-chisq.test(x = observed, p = expected / sum(expected))
+print(test_result)
+
+
+cross_tab<-table(data$Gender, data$Food)
+cross_tab
+chi_square_test_result<-chisq.test(cross_tab)
+print(chi_square_test_result)
+
+results <- chisq.posthoc.test(cross_tab, method = "bonferroni")
+results
+
+corrplot(chi_square_test_result$residuals, is.cor = FALSE)
+
+
+df=read.csv("C:/Users/tiock/Desktop/Machine_set.csv")
+
+set_a <- subset(df, machine == "A")$value
+set_b <- subset(df, machine == "B")$value
+
+result <- var.test(set_a, set_b)
+print(result)
+
+var.test(set_a, set_b, alternative = "less")
+
+var.test(set_a, set_b, alternative = "greater")
+
+
+data <- read.csv(, stringsAsFactors = TRUE)
+
+anova_result <- aov(Score ~ Class, data = data)
+
+summary(anova_result)
+
+tukey_result <- glht(anova_result, linfct = mcp(Class = "Tukey"))
+summary(tukey_result)
+
+result_pearson=corr.test(heights, weights, method="pearson")
+result_pearson=corr.test(s_eval, e_eval, method="spearman")
